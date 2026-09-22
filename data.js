@@ -233,9 +233,14 @@ const TIMELINE = [
     desc: "Um sexto ministro entra na lista: mensagens do diretor jurídico do Master, Luiz Rennó, tratam a advogada Dalide Corrêa (ex-diretora-geral do IDP por quase uma década) como “sócia do GM stf” e “canal direto com o Supremo”. O escritório dela recebeu cerca de R$ 33 milhões do Master em 2024, ligados a disputas de precatórios do setor sucroalcooleiro; num dos pedidos, Rennó pede autorização urgente de R$ 15 milhões citando a vitória num desses processos. Um ex-cunhado de Gilmar, o empresário Chiquinho Feitosa, também é citado recebendo pagamentos mensais de Vorcaro. Gilmar nega qualquer sociedade com Dalide, diz não ter conhecimento do trabalho dela e afirma ter votado contra os interesses do Master em todos os processos relacionados."
   },
   {
+    date: "21 set 2026", sort: "2026-09-21", cats: ["master", "pf"], isNew: true,
+    title: "Fotos de Gonet e Vorcaro juntos em Londres",
+    desc: "Vazam fotos do procurador-geral Paulo Gonet e Daniel Vorcaro num encontro em Londres, fumando charuto e bebendo uísque num clima informal. As imagens contradizem a versão dada por Gonet em 2024, quando classificou seus contatos com o banqueiro como assuntos estritamente profissionais."
+  },
+  {
     date: "22 set 2026 (hoje)", sort: "2026-09-22", cats: ["stf"],
     title: "Situação em aberto",
-    desc: "O julgamento sobre unir ou separar os processos de Moraes e Mendonça segue suspenso pela vista do Dino, sem data para retomada, mas a crise não parou: nos últimos dias vieram à tona o voo de Moraes no jato de Vorcaro e o contrato bilionário de precatórios ligado a Nunes Marques, mostrando que o caso Master segue se alargando mesmo com o julgamento parado."
+    desc: "O julgamento sobre unir ou separar os processos de Moraes e Mendonça segue suspenso pela vista do Dino, sem data para retomada, mas a crise não parou: nos últimos dias vieram à tona o voo de Moraes no jato de Vorcaro, o contrato bilionário de precatórios ligado a Nunes Marques e as fotos de Gonet com Vorcaro em Londres, mostrando que o caso Master segue se alargando mesmo com o julgamento parado."
   },
 ];
 
@@ -503,16 +508,18 @@ const PEOPLE = [
     name: "Paulo Gonet",
     role: "Procurador-Geral da República",
     group: "instituicao",
-    tag: "Adicionado a pedido",
-    summary: "Nome citado em mensagens de Vorcaro desde 2024; rejeitou a proposta de delação premiada do banqueiro em 2026 e questionou a regularidade do vazamento do relatório da PF que reacendeu a crise.",
+    tag: "Fotos em Londres",
+    summary: "Nome citado em mensagens de Vorcaro desde 2024; rejeitou a proposta de delação premiada do banqueiro em 2026, mas fotos recentes dos dois juntos em Londres, com charuto e uísque, contradizem a versão de contato só profissional.",
     stats: [
       { label: "Delação de Vorcaro rejeitada em", value: "15 jun 2026" },
+      { label: "Fotos em Londres reveladas em", value: "21 set 2026" },
     ],
     details: [
       "Já em abril de 2024, mensagens no celular de Vorcaro mostravam contatos com Gonet, classificados por ele próprio como assuntos profissionais.",
       "Em abril de 2026, o relatório do senador Alessandro Vieira pediu o indiciamento de Gonet, além de Moraes, Toffoli e Gilmar Mendes; a CPI rejeitou o relatório por 6 votos a 4.",
       "Em 15 de junho de 2026, como procurador-geral da República, Gonet rejeitou formalmente a proposta de colaboração premiada de Daniel Vorcaro.",
       "Quando o relatório da PF sobre o caso vazou, em 1º de setembro de 2026, trazendo à tona as mensagens entre Vorcaro e Moraes, a PGR sob Gonet questionou publicamente a regularidade desse vazamento.",
+      "Em 21 de setembro de 2026, vazam fotos de Gonet e Vorcaro juntos num encontro em Londres, fumando charuto e bebendo uísque num clima informal, o que contradiz diretamente a versão de 2024 de que os contatos entre os dois eram só profissionais.",
     ],
   },
 
@@ -523,11 +530,16 @@ const PEOPLE = [
     role: "Senador",
     group: "bolsonaro",
     tag: "Financiamento do filme",
-    summary: "Pediu R$ 61 milhões a Vorcaro para financiar o filme biográfico “Dark Horse” sobre o pai, Jair Bolsonaro. Alvo de inquérito da PF por possível lavagem de dinheiro e evasão de divisas.",
+    summary: "Pediu R$ 61 milhões a Vorcaro para financiar o filme biográfico “Dark Horse” sobre o pai, Jair Bolsonaro. Alvo de inquérito da PF por possível lavagem de dinheiro e evasão de divisas, além de uma operação contra o esquema de emendas que bancava a produção.",
+    stats: [
+      { label: "Pedido a Vorcaro (mai 2026)", value: "R$ 61 mi" },
+      { label: "Emendas sob suspeita", value: "R$ 2 mi" },
+    ],
     details: [
-      "Em maio de 2026, vazaram áudios em que Flávio Bolsonaro pede R$ 61 milhões a Vorcaro para financiar o filme biográfico sobre Jair Bolsonaro, o projeto “Dark Horse”.",
-      "Em julho de 2026, autorizado por Mendonça, um inquérito sigiloso da PF passou a apurar se Flávio cometeu lavagem de dinheiro e evasão de divisas no financiamento da produção.",
-      "Em 10 de setembro de 2026, Mendonça tornou pública a investigação; a PF deflagrou a Operação Make Up contra a produtora Karina da Gama e o deputado Mario Frias, suspeitos de desviar R$ 2 milhões em emendas parlamentares destinadas ao filme. Flávio nega irregularidades e chama a operação de “interferência política”.",
+      "Em maio de 2026, vazaram áudios em que Flávio Bolsonaro pede R$ 61 milhões a Vorcaro para financiar o filme biográfico sobre Jair Bolsonaro, o projeto “Dark Horse”. É o mesmo padrão de aproximação que Vorcaro cultivou com ministros do STF: usar o dinheiro do Master para comprar acesso e boa vontade em pontos estratégicos do poder, dessa vez do lado da família do ex-presidente.",
+      "Em julho de 2026, autorizado por Mendonça, um inquérito sigiloso da PF passou a apurar se Flávio cometeu lavagem de dinheiro e evasão de divisas no financiamento da produção. Mendonça manteve esse inquérito em sigilo por mais tempo justamente no período em que já liberava, ou deixava vazar, informações que prejudicavam Moraes, o que reforça a acusação de “atuação seletiva” que o próprio Moraes viria a fazer contra ele publicamente em setembro.",
+      "Em 10 de setembro de 2026, Mendonça tornou pública a investigação: a PF deflagrou a Operação Make Up contra a produtora Karina da Gama e o deputado Mario Frias, suspeitos de desviar R$ 2 milhões em emendas parlamentares (verbas públicas destinadas por parlamentares a projetos específicos) que deveriam ir para outras finalidades e teriam sido direcionadas para bancar o filme. Flávio nega irregularidades e chama a operação de “interferência política”.",
+      "O momento chamou atenção: a operação veio a público cinco dias antes da votação de 15 de setembro sobre investigar ou não Moraes, no auge do embate entre Mendonça e Moraes. Para uns, mostra que Mendonça também mirou um alvo alinhado à direita e não só Moraes; para outros, o timing reforça a leitura de que as revelações do caso Master, de um lado e de outro, vêm sendo usadas como munição política.",
     ],
   },
   {

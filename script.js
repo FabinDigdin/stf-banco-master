@@ -32,24 +32,22 @@
   }
 
   /* ---------------- theme toggle ---------------- */
+  /* escuro é o padrão real do site (sem atributo = escuro), então o estado
+     do toggle é controlado explicitamente em JS, não lido do atributo */
   const themeBtn = document.getElementById("themeToggle");
-  function applyThemeLabel() {
-    const t = document.documentElement.getAttribute("data-theme");
-    themeBtn.textContent = t === "dark" ? "☀ Claro" : "☾ Escuro";
+  let currentTheme = "dark";
+  try { currentTheme = localStorage.getItem("stf-master-theme") || "dark"; } catch (e) {}
+
+  function applyTheme() {
+    document.documentElement.setAttribute("data-theme", currentTheme);
+    themeBtn.textContent = currentTheme === "dark" ? "☀ Claro" : "☾ Escuro";
   }
   themeBtn.addEventListener("click", () => {
-    const current = document.documentElement.getAttribute("data-theme");
-    const next = current === "dark" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", next);
-    try { localStorage.setItem("stf-master-theme", next); } catch (e) {}
-    applyThemeLabel();
+    currentTheme = currentTheme === "dark" ? "light" : "dark";
+    try { localStorage.setItem("stf-master-theme", currentTheme); } catch (e) {}
+    applyTheme();
   });
-  (function initTheme() {
-    let saved = null;
-    try { saved = localStorage.getItem("stf-master-theme"); } catch (e) {}
-    if (saved) document.documentElement.setAttribute("data-theme", saved);
-    applyThemeLabel();
-  })();
+  applyTheme();
 
   /* ---------------- tabs ---------------- */
   const tabButtons = document.querySelectorAll(".tab-btn");
@@ -159,7 +157,7 @@
       const badges = el("div", { class: "tl-badges" });
       item.cats.forEach((c) => {
         const meta = CATEGORY_META[c];
-        badges.appendChild(el("span", { class: "tl-badge", style: `background:${meta.color}` }, [meta.label]));
+        badges.appendChild(el("span", { class: "tl-badge", style: `color:${meta.color};border-color:${meta.color}` }, [meta.label]));
       });
 
       const dateRow = el("div", { class: "tl-date" }, [item.date, item.isNew ? el("span", { class: "new-tag" }, ["NOVO"]) : null]);
@@ -294,5 +292,115 @@
       "Indicado por " + name,
     ]));
   });
+
+  /* ---------------- O DUELO: MORAES x MENDONÇA ---------------- */
+  const duelPeopleEl = document.getElementById("duelPeople");
+  const duelStepsEl = document.getElementById("duelSteps");
+
+  function personChip(p) {
+    const color = personColor(p);
+    return el("div", { class: "branch-person-chip", onclick: () => openPersonModal(p) }, [
+      el("div", { class: "avatar", style: `background:${color}` }, [initials(p.name)]),
+      p.name,
+    ]);
+  }
+
+  ["moraes", "mendonca"].forEach((id) => {
+    const p = findPerson(id);
+    if (p) duelPeopleEl.appendChild(personChip(p));
+  });
+
+  DUEL_STEPS.forEach((step, i) => {
+    const isNow = i === DUEL_STEPS.length - 1;
+    duelStepsEl.appendChild(el("div", { class: "duel-step" + (isNow ? " now" : "") }, [
+      el("div", { class: "ds-date" }, [step.date]),
+      el("div", { class: "ds-text" }, [step.text]),
+    ]));
+  });
+
+  /* ---------------- CAUSA & EFEITO (ramificações) ---------------- */
+  const branchListEl = document.getElementById("branchList");
+  const branchFlowEl = document.getElementById("branchFlow");
+  let currentEventId = KEY_EVENTS[0] ? KEY_EVENTS[0].id : null;
+
+  function findEvent(id) { return KEY_EVENTS.find((e) => e.id === id); }
+
+  function renderBranchList() {
+    branchListEl.innerHTML = "";
+    KEY_EVENTS.forEach((ev) => {
+      const btn = el("button", {
+        class: "branch-list-item" + (ev.id === currentEventId ? " active" : ""),
+        onclick: () => selectEvent(ev.id),
+      }, [
+        el("span", { class: "bl-date" }, [ev.date]),
+        el("span", { class: "bl-title" }, [ev.title]),
+      ]);
+      branchListEl.appendChild(btn);
+    });
+  }
+
+  function branchNode(item, cameFromCause) {
+    const wrap = el("div", { class: "branch-node" + (item.link ? " linkable" : "") });
+    if (item.link) wrap.addEventListener("click", () => selectEvent(item.link));
+    wrap.appendChild(el("p", { style: "margin:0;" }, [item.text]));
+    if (item.link) {
+      wrap.appendChild(el("span", { class: "bn-goto" }, [cameFromCause ? "› ver esse acontecimento" : "› ver desdobramento"]));
+    }
+    return wrap;
+  }
+
+  function renderBranchFlow() {
+    const ev = findEvent(currentEventId);
+    branchFlowEl.innerHTML = "";
+    if (!ev) return;
+
+    // coluna: antecedentes
+    const causesCol = el("div", {}, [el("span", { class: "branch-col-label" }, ["Antecedentes"])]);
+    if (ev.causes && ev.causes.length) {
+      ev.causes.forEach((c) => causesCol.appendChild(branchNode(c, true)));
+    } else {
+      causesCol.appendChild(el("div", { class: "branch-empty-note" }, ["// ponto de partida: sem antecedente registrado"]));
+    }
+
+    // coluna central: o evento
+    const meta = CATEGORY_META[ev.cat];
+    const eventCol = el("div", {}, [
+      el("span", { class: "branch-col-label event" }, ["O acontecimento"]),
+      el("div", { class: "branch-event-card" }, [
+        el("div", { class: "branch-event-date" }, [ev.date]),
+        el("span", { class: "tl-badge", style: `color:${meta.color};border-color:${meta.color};margin-bottom:8px;display:inline-block;` }, [meta.label]),
+        el("h4", { class: "branch-event-title" }, [ev.title]),
+        el("p", { class: "branch-event-summary" }, [ev.summary]),
+        el("div", { class: "branch-people" }, (ev.people || []).map((pid) => {
+          const p = findPerson(pid);
+          return p ? personChip(p) : null;
+        })),
+      ]),
+    ]);
+
+    // coluna: consequências
+    const effectsCol = el("div", {}, [el("span", { class: "branch-col-label" }, ["Consequências"])]);
+    if (ev.effects && ev.effects.length) {
+      ev.effects.forEach((eff) => effectsCol.appendChild(branchNode(eff, false)));
+    } else {
+      effectsCol.appendChild(el("div", { class: "branch-empty-note" }, ["// situação em aberto, sem desdobramento registrado ainda"]));
+    }
+
+    branchFlowEl.appendChild(causesCol);
+    branchFlowEl.appendChild(eventCol);
+    branchFlowEl.appendChild(effectsCol);
+  }
+
+  function selectEvent(id) {
+    if (!findEvent(id)) return;
+    currentEventId = id;
+    renderBranchList();
+    renderBranchFlow();
+    const flowSection = document.querySelector("#tab-branches .branch-layout");
+    if (flowSection) flowSection.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  renderBranchList();
+  renderBranchFlow();
 
 })();
